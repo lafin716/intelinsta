@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import LabelPostType from "@/components/label/PostType.vue";
 import LabelPostStatus from "@/components/label/PostStatus.vue";
+import { PostStatus } from "@/types/post/post.status";
 
 interface Post {
   id: number;
@@ -18,14 +19,6 @@ interface Post {
 enum PostType {
   IMMEDIATE = "immediate",
   SCHEDULED = "scheduled",
-}
-
-enum PostStatus {
-  POSTED = "posted",
-  SCHEDULED = "scheduled",
-  DRAFT = "draft",
-  CANCELED = "canceled",
-  FAILED = "failed",
 }
 
 const tableData: Post[] = [
