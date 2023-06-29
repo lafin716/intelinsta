@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     viewer: true,
   },
   build: {
-    transpile: lifecycle === "build" ? ["element-plus"] : [],
+    transpile:
+      lifecycle === "build" ? ["@nuxt/typescript-build", "element-plus"] : [],
   },
 });

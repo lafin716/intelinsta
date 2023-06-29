@@ -1,25 +1,14 @@
 <script setup lang="ts">
+import AddPost from "@/components/dialogs/AddPost.vue";
 import LabelPostType from "@/components/label/PostType.vue";
 import LabelPostStatus from "@/components/label/PostStatus.vue";
-import { PostStatus } from "@/types/post/post.status";
+import { Post, PostType, PostStatus } from "@/types/post/post.type";
+import { ref } from "vue";
 
-interface Post {
-  id: number;
-  uid: string;
-  type: PostType;
-  status: PostStatus;
-  title: string;
-  content: string;
-  pictures: string[];
-  created: string;
-  updated: string;
-  scheduled: string;
-}
-
-enum PostType {
-  IMMEDIATE = "immediate",
-  SCHEDULED = "scheduled",
-}
+const isShow = ref<boolean>(false);
+const closePopup = () => {
+  isShow.value = false;
+};
 
 const tableData: Post[] = [
   {
@@ -109,7 +98,9 @@ const tableData: Post[] = [
     <template #header>
       <div class="card-header flex justify-between">
         <span>게시물 목록</span>
-        <el-button class="button" type="primary" text>새 게시물 등록</el-button>
+        <el-button class="button" type="primary" text @click="isShow = true"
+          >새 게시물 등록</el-button
+        >
       </div>
     </template>
     <el-table :data="tableData" style="width: 100%">
@@ -185,4 +176,5 @@ const tableData: Post[] = [
       </el-table-column>
     </el-table>
   </el-card>
+  <AddPost :show="isShow" @close="closePopup" />
 </template>

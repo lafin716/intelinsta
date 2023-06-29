@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { PostStatus, statusMap } from "~/types/post/post.status";
+import { ScheduleSummary } from "~/types/post/post.type";
 import type { CalendarDateType, CalendarInstance } from "element-plus";
 
 const calendar = ref<CalendarInstance>();
@@ -8,16 +8,6 @@ const selectDate = (val: CalendarDateType) => {
   if (!calendar.value) return;
   calendar.value.selectDate(val);
 };
-
-interface ScheduleSummary {
-  [key: string]: ScheduleCountSummary;
-}
-
-interface ScheduleCountSummary {
-  posted: number;
-  scheduled: number;
-  failed: number;
-}
 
 const scheduleMap: ScheduleSummary = {
   "2023-06-05": {
@@ -61,7 +51,7 @@ const scheduleMap: ScheduleSummary = {
           <div v-if="scheduleMap[data.day]">
             <el-tag
             v-if="scheduleMap[data.day].posted > 0"
-              size="mini"
+              size="small"
               disable-transitions
               class="me-1 mb-1"
               type="success"
@@ -70,7 +60,7 @@ const scheduleMap: ScheduleSummary = {
             </el-tag>
             <el-tag
             v-if="scheduleMap[data.day].scheduled > 0"
-              size="mini"
+              size="small"
               disable-transitions
               class="me-1 mb-1"
               type="warning"
@@ -79,7 +69,7 @@ const scheduleMap: ScheduleSummary = {
             </el-tag>
             <el-tag
               v-if="scheduleMap[data.day].failed > 0"
-              size="mini"
+              size="small"
               disable-transitions
               class="me-1 mb-1"
               type="danger"
@@ -92,10 +82,6 @@ const scheduleMap: ScheduleSummary = {
       </template>
     </el-calendar>
   </el-card>
-
-  <div>
-    {{ scheduleMap }}
-  </div>
 </template>
 
 <style scoped>

@@ -1,9 +1,37 @@
+export interface Post {
+  id: number;
+  uid: string;
+  type: PostType;
+  status: PostStatus;
+  title: string;
+  content: string;
+  pictures: string[];
+  created: string;
+  updated: string;
+  scheduled: string;
+}
+
+export enum PostType {
+  IMMEDIATE = "immediate",
+  SCHEDULED = "scheduled",
+}
+
 export enum PostStatus {
   POSTED = "posted",
   SCHEDULED = "scheduled",
   DRAFT = "draft",
   CANCELED = "canceled",
   FAILED = "failed",
+}
+
+export interface ScheduleSummary {
+  [key: string]: ScheduleCountSummary;
+}
+
+export interface ScheduleCountSummary {
+  posted: number;
+  scheduled: number;
+  failed: number;
 }
 
 export const statusMap = {

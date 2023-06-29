@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { statusMap } from "~/types/post/post.type";
 
 const props = defineProps({
   type: String,
