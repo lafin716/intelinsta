@@ -11,7 +11,7 @@ const menu = [
   {
     title: "계정관리",
     icon: "mdi:account-circle-outline",
-    link: "/accounts",
+    link: "/users",
     submenu: [
       {
         title: "계정목록",
