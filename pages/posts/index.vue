@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import AddPost from "@/components/dialogs/AddPost.vue";
 import LabelPostType from "@/components/label/PostType.vue";
 import LabelPostStatus from "@/components/label/PostStatus.vue";
 import { Post, PostType, PostStatus } from "@/types/post/post.type";
-import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-const isShow = ref<boolean>(false);
-const closePopup = () => {
-  isShow.value = false;
+const router = useRouter();
+const goAddPost = () => {
+  router.push("/posts/add");
 };
 
 const tableData: Post[] = [
@@ -98,15 +97,21 @@ const tableData: Post[] = [
     <template #header>
       <div class="card-header flex justify-between">
         <span>게시물 목록</span>
-        <el-button class="button" type="primary" text @click="isShow = true"
-          >새 게시물 등록</el-button
-        >
+        <el-button class="button" type="primary" text @click="goAddPost">
+          새 게시물 등록
+        </el-button>
       </div>
     </template>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column label="번호" width="70">
         <template #default="scope">
           <span style="margin-left: 10px">{{ scope.row.id }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="제목">
+        <template #default="scope">
+          <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
 
@@ -122,12 +127,6 @@ const tableData: Post[] = [
       <el-table-column label="타입" width="100" align="center">
         <template #default="scope">
           <LabelPostType :type="scope.row.type" />
-        </template>
-      </el-table-column>
-
-      <el-table-column label="제목">
-        <template #default="scope">
-          <span>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
 
@@ -176,5 +175,4 @@ const tableData: Post[] = [
       </el-table-column>
     </el-table>
   </el-card>
-  <AddPost :show="isShow" @close="closePopup" />
 </template>

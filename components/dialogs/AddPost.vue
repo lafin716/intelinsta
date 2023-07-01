@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive } from "vue";
 import { PostType } from "@/types/post/post.type";
+import type { UploadProps, UploadUserFile } from "element-plus";
 
 const props = defineProps({
   show: Boolean,
@@ -17,15 +18,15 @@ const options = [
   },
 ];
 
+const showDialog = computed(() => props.show);
 const formLabelWidth = "140px";
 const form = reactive({
   type: "",
-  scheduled: "",
+  scheduled: new Date(),
   content: "",
 });
 
 const isSchedule = computed(() => form.type === PostType.SCHEDULED);
-const dialogVisible = computed(() => props.show);
 const isShowPictureDetail = ref(false);
 
 const fileList = ref<UploadUserFile[]>([
@@ -42,9 +43,21 @@ const fileList = ref<UploadUserFile[]>([
     url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
   },
 ]);
+
+const dialogImageUrl = ref("");
+const dialogVisible = ref(false);
+
+const handleRemove: UploadProps["onRemove"] = (uploadFile, uploadFiles) => {
+  console.log(uploadFile, uploadFiles);
+};
+
+const handlePictureCardPreview: UploadProps["onPreview"] = (uploadFile) => {
+  dialogImageUrl.value = uploadFile.url!;
+  dialogVisible.value = true;
+};
 </script>
 <template>
-  <el-dialog v-model="dialogVisible" title="게시물등록" append-to-body>
+  <el-dialog v-model="showDialog" title="게시물등록" append-to-body>
     <el-form :model="form">
       <el-form-item label="업로드방식" :label-width="formLabelWidth">
         <el-select v-model="form.type" placeholder="선택">
@@ -72,7 +85,6 @@ const fileList = ref<UploadUserFile[]>([
       <el-form-item label="사진업로드" :label-width="formLabelWidth">
         <el-upload
           v-model:file-list="fileList"
-          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
           list-type="picture-card"
           :on-preview="handlePictureCardPreview"
           :on-remove="handleRemove"
