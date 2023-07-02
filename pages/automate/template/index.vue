@@ -90,23 +90,31 @@ const contents: Post[] = [
   <el-card>
     <template #header>
       <div class="card-header flex justify-between">
-        <span>게시물 목록</span>
+        <span>템플릿 목록</span>
         <el-button class="button" type="primary" text @click="isShow = true"
-          >새 게시물 등록</el-button
+          >새 템플릿 등록</el-button
         >
       </div>
     </template>
-    <div class="flex w-full justify-between">
-      <el-card class="w-1/4" v-for="item in contents" :key="item">
-        <template #header>
-          <span>{{ item.title }}</span>
-        </template>
-        <el-carousel trigger="hover">
-          <el-carousel-item v-for="picture in item.pictures" :key="picture">
-            <img :src="picture" class="w-full" />
-          </el-carousel-item>
-        </el-carousel>
-      </el-card>
+    <div class="w-full">
+      <el-row :gutter="20">
+        <el-col :span="6" v-for="item in contents" class="mb-2">
+          <el-card>
+            <template #header>
+              <span>{{ item.title }}</span>
+            </template>
+            <el-carousel
+              trigger="hover"
+              indicator-position="none"
+              :autoplay="false"
+            >
+              <el-carousel-item v-for="picture in item.pictures" :key="picture">
+                <img :src="picture" class="w-full" />
+              </el-carousel-item>
+            </el-carousel>
+          </el-card>
+        </el-col>
+      </el-row>
     </div>
   </el-card>
 </template>

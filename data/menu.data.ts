@@ -34,19 +34,19 @@ export const menu = [
     ],
   },
   {
-    title: "컨텐츠관리",
-    icon: "fluent:content-view-20-regular",
-    link: "/contents",
+    title: "생산성",
+    icon: "material-symbols:astrophotography-auto-outline",
+    link: "/automate",
     submenu: [
-      {
-        title: "컨텐츠목록",
-        icon: "mdi:format-list-bulleted",
-        link: "",
-      },
       {
         title: "템플릿관리",
         icon: "tabler:template",
         link: "/template",
+      },
+      {
+        title: "텍스터블 이미지 관리",
+        icon: "material-symbols:insert-text-outline",
+        link: "/textable",
       },
     ],
   },

@@ -10,7 +10,7 @@ const imageUrl = ref("");
 
 const router = useRouter();
 const goTemplateList = () => {
-  router.push("/contents/template");
+  router.push("/automate/textable");
 };
 const saveTemplate = () => {
   ElMessage.success("저장되었습니다.");
