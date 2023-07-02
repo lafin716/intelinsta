@@ -7,6 +7,16 @@ const router = useRouter();
 const goAddTemplate = () => {
   router.push("/automate/textable/add");
 };
+
+const testText = ref("");
+
+const previewTextStyle = (color, size) => {
+  return {
+    color: color,
+    fontSize: `${size}px`,
+  };
+};
+
 const templates = ref<Template[]>([
   {
     title: "템플릿 1",
@@ -86,6 +96,12 @@ const templates = ref<Template[]>([
       </div>
     </template>
     <div class="w-full">
+      <el-row :gutter="20" class="mb-4 flex items-center justify-start">
+        <el-col :span="2"> 테스트 텍스트 </el-col>
+        <el-col :span="6">
+          <el-input v-model="testText" size="default"></el-input>
+        </el-col>
+      </el-row>
       <el-row :gutter="20">
         <el-col :span="6" v-for="item in templates" class="mb-2">
           <el-card>
@@ -93,7 +109,16 @@ const templates = ref<Template[]>([
               <span>{{ item.title }}</span>
             </template>
             <div class="text-center">
-              <img :src="item.url" class="w-full" />
+              <div class="preview-wrap">
+                <div class="preview-background">
+                  <img :src="item.url" class="w-full" />
+                </div>
+                <div class="preview-foreground">
+                  <p :style="previewTextStyle(item.textColor, item.textSize)">
+                    {{ testText }}
+                  </p>
+                </div>
+              </div>
             </div>
           </el-card>
         </el-col>
