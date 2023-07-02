@@ -41,7 +41,7 @@ export const statusMap = {
     label: "업로드 완료",
   },
   [PostStatus.SCHEDULED]: {
-    type: "primary",
+    type: "",
     icon: "gridicons:scheduled",
     label: "예약됨",
   },

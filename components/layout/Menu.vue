@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { menu } from "@/data/menu.data";
 const route = useRoute();
 const currentPath = computed(() => route.path);
+const collapse = ref(false);
 </script>
 <template>
   <el-aside width="250px">
@@ -10,6 +11,7 @@ const currentPath = computed(() => route.path);
       class="h-full overflow-y-auto"
       :default-active="currentPath"
       :router="true"
+      :collapse="collapse"
     >
       <template v-for="(item, index) in menu">
         <el-menu-item v-if="!item.submenu" :index="item.link">

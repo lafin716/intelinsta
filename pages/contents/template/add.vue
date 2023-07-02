@@ -27,7 +27,6 @@ const handleAvatarSuccess: UploadProps["onSuccess"] = (
 const form = ref<Template>({
   title: "",
   url: "",
-  file: null,
   text: "",
   textSize: 50,
   textColor: "#000000",

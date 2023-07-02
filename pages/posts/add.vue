@@ -15,13 +15,14 @@ const options = [
 ];
 
 const formLabelWidth = "140px";
-const form = reactive({
-  type: "",
+const form = ref({
+  type: PostType.IMMEDIATE,
   scheduled: new Date(),
   content: "",
+  fileList: [],
 });
 
-const isSchedule = computed(() => form.type === PostType.SCHEDULED);
+const isSchedule = computed(() => form.value.type === PostType.SCHEDULED);
 const isShowPictureDetail = ref(false);
 
 const fileList = ref<UploadUserFile[]>([]);
@@ -69,7 +70,7 @@ const handlePictureCardPreview: UploadProps["onPreview"] = (uploadFile) => {
 
           <el-form-item label="사진업로드" :label-width="formLabelWidth">
             <el-upload
-              v-model:file-list="fileList"
+              v-model:file-list="form.fileList"
               list-type="picture-card"
               :on-preview="handlePictureCardPreview"
               :on-remove="handleRemove"
@@ -99,9 +100,9 @@ const handlePictureCardPreview: UploadProps["onPreview"] = (uploadFile) => {
     <el-col :span="8">
       <el-card>
         <template #header>미리보기</template>
-        <div class="w-full min-h-[48%]">
-          <div v-if="fileList" class="preview-wrap">
-            <el-carousel trigger="click">
+        <div class="w-full">
+          <div v-if="fileList && fileList.length > 0" class="preview-wrap">
+            <el-carousel trigger="click" height="450px">
               <el-carousel-item
                 v-for="item in fileList"
                 :key="item"
@@ -128,5 +129,6 @@ const handlePictureCardPreview: UploadProps["onPreview"] = (uploadFile) => {
   position: relative;
   width: 100%;
   height: 100%;
+  background: rgb(71, 86, 105);
 }
 </style>

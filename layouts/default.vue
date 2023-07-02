@@ -4,11 +4,11 @@ import LayoutMenu from "~/components/layout/Menu.vue";
 <template>
   <div class="common-layout h-full">
     <el-header class="flex items-center border-solid border-2">
-      <NuxtLink to="/"
-        ><el-text class="mx-1" size="large"
-          ><Icon name="skill-icons:instagram"></Icon> INTELINSTA</el-text
-        ></NuxtLink
-      >
+      <NuxtLink to="/">
+        <el-text class="mx-1" size="large">
+          <Icon name="skill-icons:instagram"></Icon> INTELINSTA
+        </el-text>
+      </NuxtLink>
     </el-header>
     <div class="h-full flex flex-row">
       <LayoutMenu />

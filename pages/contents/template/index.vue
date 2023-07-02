@@ -1,11 +1,56 @@
 <script setup lang="ts">
 import HelpMessage from "@/components/noti/HelpMessage.vue";
+import { Template } from "types/content/template.type";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const goAddTemplate = () => {
   router.push("/contents/template/add");
 };
+const templates = ref<Template[]>([
+  {
+    title: "템플릿 1",
+    url: "/image/template.png",
+    text: "",
+    textSize: 50,
+    textColor: "#000000",
+  },
+  {
+    title: "템플릿 1",
+    url: "/image/template.png",
+    text: "",
+    textSize: 50,
+    textColor: "#000000",
+  },
+  {
+    title: "템플릿 1",
+    url: "/image/template.png",
+    text: "",
+    textSize: 50,
+    textColor: "#000000",
+  },
+  {
+    title: "템플릿 1",
+    url: "/image/template.png",
+    text: "",
+    textSize: 50,
+    textColor: "#000000",
+  },
+  {
+    title: "템플릿 1",
+    url: "/image/template.png",
+    text: "",
+    textSize: 50,
+    textColor: "#000000",
+  },
+  {
+    title: "템플릿 1",
+    url: "/image/template.png",
+    text: "",
+    textSize: 50,
+    textColor: "#000000",
+  },
+]);
 </script>
 <template>
   <el-card>
@@ -23,6 +68,14 @@ const goAddTemplate = () => {
         </el-button>
       </div>
     </template>
+    <el-card v-for="item in templates" :key="item" class="w-1/4">
+      <template #header>
+        <span>{{ item.title }}</span>
+      </template>
+      <div class="text-center">
+        <img :src="item.url" class="w-full" />
+      </div>
+    </el-card>
   </el-card>
 </template>
 
