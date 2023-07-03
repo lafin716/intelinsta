@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-import { Template } from "@/types/content/template.type";
+import { Textable } from "@/types/automate/textable.type";
 import { ref, computed } from "vue";
 import { Plus } from "@element-plus/icons-vue";
 import type { UploadProps } from "element-plus";
@@ -24,7 +24,7 @@ const handleAvatarSuccess: UploadProps["onSuccess"] = (
   imageUrl.value = URL.createObjectURL(uploadFile.raw!);
 };
 
-const form = ref<Template>({
+const form = ref<Textable>({
   title: "",
   url: "",
   text: "",
@@ -45,7 +45,7 @@ const previewTextStyle = computed(() => {
       <el-card>
         <template #header>
           <div class="card-header flex justify-between">
-            <span class="me-2">템플릿등록</span>
+            <span class="me-2">텍스터블 이미지 등록</span>
             <div>
               <el-button
                 class="button"

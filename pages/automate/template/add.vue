@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { Textable } from "@/types/automate/textable.type";
 import { ref, computed } from "vue";
 import { Plus } from "@element-plus/icons-vue";
 import type { UploadProps } from "element-plus";
 
-const route = useRoute();
-const id = computed(() => route.params.id);
-
 const imageUrl = ref("");
 
 const router = useRouter();
 const goTemplateList = () => {
-  router.push("/automate/textable");
+  router.push("/automate/template");
 };
 const saveTemplate = () => {
   ElMessage.success("저장되었습니다.");
@@ -28,12 +25,11 @@ const handleAvatarSuccess: UploadProps["onSuccess"] = (
 };
 
 const form = ref<Textable>({
-  id: "21312312313",
-  title: "템플릿",
-  url: "/image/template.png",
+  title: "",
+  url: "",
   text: "",
-  textSize: 30,
-  textColor: "#a0a0a0",
+  textSize: 50,
+  textColor: "#000000",
 });
 
 const previewTextStyle = computed(() => {
@@ -49,7 +45,7 @@ const previewTextStyle = computed(() => {
       <el-card>
         <template #header>
           <div class="card-header flex justify-between">
-            <span class="me-2">텍스터블 이미지 수정</span>
+            <span class="me-2">템플릿등록</span>
             <div>
               <el-button
                 class="button"

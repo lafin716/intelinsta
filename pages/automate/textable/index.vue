@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { Template } from "types/content/template.type";
+import { Textable } from "types/automate/textable.type";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { DropdownInstance } from "element-plus";
 
 const router = useRouter();
-const goAddTemplate = () => {
+const goAdd = () => {
   router.push("/automate/textable/add");
 };
 
@@ -17,8 +18,13 @@ const previewTextStyle = (color, size) => {
   };
 };
 
-const templates = ref<Template[]>([
+const goModify = (id) => {
+  router.push(`/automate/textable/${id}`);
+};
+
+const templates = ref<Textable[]>([
   {
+    id: "123123123",
     title: "템플릿 1",
     url: "/image/template.png",
     text: "",
@@ -26,6 +32,7 @@ const templates = ref<Template[]>([
     textColor: "#000000",
   },
   {
+    id: "123123123",
     title: "템플릿 1",
     url: "/image/template.png",
     text: "",
@@ -33,6 +40,7 @@ const templates = ref<Template[]>([
     textColor: "#000000",
   },
   {
+    id: "123123123",
     title: "템플릿 1",
     url: "/image/template.png",
     text: "",
@@ -40,6 +48,7 @@ const templates = ref<Template[]>([
     textColor: "#000000",
   },
   {
+    id: "123123123",
     title: "템플릿 1",
     url: "/image/template.png",
     text: "",
@@ -47,6 +56,7 @@ const templates = ref<Template[]>([
     textColor: "#000000",
   },
   {
+    id: "123123123",
     title: "템플릿 1",
     url: "/image/template.png",
     text: "",
@@ -54,6 +64,7 @@ const templates = ref<Template[]>([
     textColor: "#000000",
   },
   {
+    id: "123123123",
     title: "템플릿 1",
     url: "/image/template.png",
     text: "",
@@ -61,6 +72,7 @@ const templates = ref<Template[]>([
     textColor: "#000000",
   },
   {
+    id: "123123123",
     title: "템플릿 1",
     url: "/image/template.png",
     text: "",
@@ -68,6 +80,7 @@ const templates = ref<Template[]>([
     textColor: "#000000",
   },
   {
+    id: "123123123",
     title: "템플릿 1",
     url: "/image/template.png",
     text: "",
@@ -75,6 +88,7 @@ const templates = ref<Template[]>([
     textColor: "#000000",
   },
   {
+    id: "123123123",
     title: "템플릿 1",
     url: "/image/template.png",
     text: "",
@@ -90,7 +104,7 @@ const templates = ref<Template[]>([
         <div>
           <span class="me-2">텍스터블 이미지 목록</span>
         </div>
-        <el-button class="button" type="primary" text @click="goAddTemplate">
+        <el-button class="button" type="primary" text @click="goAdd">
           새 텍스터블 이미지 등록
         </el-button>
       </div>
@@ -106,7 +120,18 @@ const templates = ref<Template[]>([
         <el-col :span="6" v-for="item in templates" class="mb-2">
           <el-card>
             <template #header>
-              <span>{{ item.title }}</span>
+              <div class="flex justify-between">
+                <span>{{ item.title }}</span>
+                <div>
+                  <el-button
+                    type="primary"
+                    size="small"
+                    @click="goModify(item.id)"
+                    >수정</el-button
+                  >
+                  <el-button type="danger" size="small">삭제</el-button>
+                </div>
+              </div>
             </template>
             <div class="text-center">
               <div class="preview-wrap">

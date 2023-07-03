@@ -1,14 +1,14 @@
-export interface Content {
+export interface Template {
   id?: string;
   title?: string;
   description?: string;
-  content?: ContentItem[];
+  content?: TemplateItem[];
   hashtags?: string[];
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export interface ContentItem {
+export interface TemplateItem {
   id?: string;
   type: "image" | "video" | "template";
   url: string;

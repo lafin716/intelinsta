@@ -49,7 +49,7 @@ const previewTextStyle = computed(() => {
       <el-card>
         <template #header>
           <div class="card-header flex justify-between">
-            <span class="me-2">텍스터블 이미지 수정</span>
+            <span class="me-2">템플릿등록</span>
             <div>
               <el-button
                 class="button"

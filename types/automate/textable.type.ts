@@ -1,4 +1,4 @@
-export interface Template {
+export interface Textable {
   id?: string;
   title: string;
   url: string;

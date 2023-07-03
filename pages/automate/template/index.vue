@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Post, PostType, PostStatus } from "@/types/post/post.type";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-const isShow = ref<boolean>(false);
+const router = useRouter();
 const contents: Post[] = [
   {
     id: 1,
@@ -85,15 +86,23 @@ const contents: Post[] = [
     scheduled: "2021-09-01",
   },
 ];
+
+const goAdd = () => {
+  router.push("/automate/template/add");
+};
+
+const goModify = (id) => {
+  router.push(`/automate/template/${id}`);
+};
 </script>
 <template>
   <el-card>
     <template #header>
       <div class="card-header flex justify-between">
         <span>템플릿 목록</span>
-        <el-button class="button" type="primary" text @click="isShow = true"
-          >새 템플릿 등록</el-button
-        >
+        <el-button class="button" type="primary" text @click="goAdd">
+          새 템플릿 등록
+        </el-button>
       </div>
     </template>
     <div class="w-full">
@@ -101,7 +110,18 @@ const contents: Post[] = [
         <el-col :span="6" v-for="item in contents" class="mb-2">
           <el-card>
             <template #header>
-              <span>{{ item.title }}</span>
+              <div class="flex justify-between">
+                <span>{{ item.title }}</span>
+                <div>
+                  <el-button
+                    type="primary"
+                    size="small"
+                    @click="goModify(item.id)"
+                    >수정</el-button
+                  >
+                  <el-button type="danger" size="small">삭제</el-button>
+                </div>
+              </div>
             </template>
             <el-carousel
               trigger="hover"
