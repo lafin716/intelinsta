@@ -4,7 +4,7 @@ import { ElMessage } from "element-plus";
 import { Textable } from "@/types/automate/textable.type";
 import { ref, computed } from "vue";
 import { Plus } from "@element-plus/icons-vue";
-import type { UploadProps } from "element-plus";
+import type { UploadProps, UploadUserFile } from "element-plus";
 
 const imageUrl = ref("");
 
@@ -17,11 +17,31 @@ const saveTemplate = () => {
   goTemplateList();
 };
 
-const handleAvatarSuccess: UploadProps["onSuccess"] = (
-  response,
-  uploadFile
-) => {
-  imageUrl.value = URL.createObjectURL(uploadFile.raw!);
+const fileList = ref<UploadUserFile[]>([
+  {
+    name: "food.jpeg",
+    url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
+  },
+  {
+    name: "food.jpeg",
+    url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
+  },
+  {
+    name: "food.jpeg",
+    url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
+  },
+]);
+
+const dialogImageUrl = ref("");
+const dialogVisible = ref(false);
+
+const handleRemove: UploadProps["onRemove"] = (uploadFile, uploadFiles) => {
+  console.log(uploadFile, uploadFiles);
+};
+
+const handlePictureCardPreview: UploadProps["onPreview"] = (uploadFile) => {
+  dialogImageUrl.value = uploadFile.url!;
+  dialogVisible.value = true;
 };
 
 const form = ref<Textable>({
@@ -80,12 +100,12 @@ const previewTextStyle = computed(() => {
 
             <el-form-item label="템플릿 이미지" required>
               <el-upload
-                class="avatar-uploader"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
+                v-model:file-list="fileList"
+                list-type="picture-card"
+                :on-preview="handlePictureCardPreview"
+                :on-remove="handleRemove"
               >
-                <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-                <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+                <el-icon><Plus /></el-icon>
               </el-upload>
             </el-form-item>
 
