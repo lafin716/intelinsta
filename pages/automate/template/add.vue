@@ -17,21 +17,7 @@ const saveTemplate = () => {
   goTemplateList();
 };
 
-const fileList = ref<UploadUserFile[]>([
-  {
-    name: "food.jpeg",
-    url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-  },
-  {
-    name: "food.jpeg",
-    url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-  },
-  {
-    name: "food.jpeg",
-    url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-  },
-]);
-
+const fileList = ref<UploadUserFile[]>([]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 
@@ -104,22 +90,10 @@ const previewTextStyle = computed(() => {
                 list-type="picture-card"
                 :on-preview="handlePictureCardPreview"
                 :on-remove="handleRemove"
+                :multiple="true"
               >
                 <el-icon><Plus /></el-icon>
               </el-upload>
-            </el-form-item>
-
-            <el-form-item label="텍스트 색상" required>
-              <el-color-picker v-model="form.textColor" size="large" />
-            </el-form-item>
-
-            <el-form-item label="텍스트 크기" required>
-              <el-input
-                size="default"
-                class="mb-2 w-25"
-                placeholder="텍스트 크기를 입력해주세요."
-                v-model="form.textSize"
-              ></el-input>
             </el-form-item>
 
             <el-divider content-position="left">테스트</el-divider>
@@ -136,6 +110,9 @@ const previewTextStyle = computed(() => {
           </el-form>
         </div>
       </el-card>
+      <el-dialog v-model="dialogVisible">
+        <img w-full :src="dialogImageUrl" alt="Preview Image" />
+      </el-dialog>
     </el-col>
     <el-col :span="8">
       <el-card>
