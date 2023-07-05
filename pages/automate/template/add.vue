@@ -3,11 +3,10 @@ import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { Textable } from "@/types/automate/textable.type";
 import { ref, computed } from "vue";
-import { Plus } from "@element-plus/icons-vue";
-import type { UploadProps, UploadUserFile } from "element-plus";
+import ListTextableImages from "@/components/dialogs/ListTextableImages.vue";
+import type { UploadFile, UploadFiles, UploadUserFile } from "element-plus";
 
 const imageUrl = ref("");
-
 const router = useRouter();
 const goTemplateList = () => {
   router.push("/automate/template");
@@ -17,19 +16,10 @@ const saveTemplate = () => {
   goTemplateList();
 };
 
-const fileList = ref<UploadUserFile[]>([]);
+const showTextableDialog = ref(false);
+const fileList = ref<(UploadUserFile | Textable)[]>([]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
-
-const handleRemove: UploadProps["onRemove"] = (uploadFile, uploadFiles) => {
-  console.log(uploadFile, uploadFiles);
-};
-
-const handlePictureCardPreview: UploadProps["onPreview"] = (uploadFile) => {
-  dialogImageUrl.value = uploadFile.url!;
-  dialogVisible.value = true;
-};
-
 const form = ref<Textable>({
   title: "",
   url: "",
@@ -44,6 +34,32 @@ const previewTextStyle = computed(() => {
     fontSize: `${form.value.textSize}px`,
   };
 });
+
+const previewImage = (file: UploadUserFile | Textable) => {
+  if ("raw" in file) {
+    return URL.createObjectURL(file.raw!);
+  }
+
+  return file.url;
+};
+
+const handleDeleteImage = (index: number) => {
+  console.log(index);
+  fileList.value.splice(index, 1);
+};
+
+const handleSelectTextable = (item: Textable) => {
+  fileList.value.push(item);
+  showTextableDialog.value = false;
+};
+
+const uploaded = (
+  response: any,
+  uploadFile: UploadFile,
+  uploadFiles: UploadFiles
+) => {
+  console.log(response, uploadFile, uploadFiles);
+};
 </script>
 <template>
   <el-row :gutter="20">
@@ -87,13 +103,57 @@ const previewTextStyle = computed(() => {
             <el-form-item label="템플릿 이미지" required>
               <el-upload
                 v-model:file-list="fileList"
-                list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove"
                 :multiple="true"
+                :auto-upload="false"
+                @on-success="uploaded"
+                :show-file-list="false"
+                class="flex items-center me-1"
               >
-                <el-icon><Plus /></el-icon>
+                <template #trigger>
+                  <el-button type="">이미지 추가</el-button>
+                </template>
               </el-upload>
+
+              <el-button type="" @click="showTextableDialog = true">
+                텍스터블 이미지 추가
+              </el-button>
+            </el-form-item>
+
+            <el-form-item label="업로드 된 목록" required>
+              <draggable v-model="fileList" class="flex flex-wrap">
+                <transition-group>
+                  <div
+                    v-for="(item, index) in fileList"
+                    v-bind:key="index"
+                    class="p-2"
+                  >
+                    <el-card>
+                      <template #header>
+                        <div class="flex justify-between">
+                          <Icon
+                            name="material-symbols:drag-pan-rounded"
+                            class="cursor-move"
+                            size="16"
+                          />
+                          <Icon
+                            name="ic:round-cancel"
+                            class="cursor-pointer"
+                            size="16"
+                            @click="handleDeleteImage(index)"
+                          />
+                        </div>
+                      </template>
+                      <div class="flex items-center">
+                        <el-image
+                          :src="previewImage(item)"
+                          fit="cover"
+                          style="width: 100px; height: 100px"
+                        ></el-image>
+                      </div>
+                    </el-card>
+                  </div>
+                </transition-group>
+              </draggable>
             </el-form-item>
 
             <el-divider content-position="left">테스트</el-divider>
@@ -110,9 +170,6 @@ const previewTextStyle = computed(() => {
           </el-form>
         </div>
       </el-card>
-      <el-dialog v-model="dialogVisible">
-        <img w-full :src="dialogImageUrl" alt="Preview Image" />
-      </el-dialog>
     </el-col>
     <el-col :span="8">
       <el-card>
@@ -140,6 +197,18 @@ const previewTextStyle = computed(() => {
       </el-card>
     </el-col>
   </el-row>
+
+  <el-dialog v-model="dialogVisible" :append-to-body="true">
+    <img w-full :src="dialogImageUrl" alt="Preview Image" />
+  </el-dialog>
+
+  <el-dialog
+    v-model="showTextableDialog"
+    title="텍스터블 이미지 추가"
+    :append-to-body="true"
+  >
+    <ListTextableImages @upload="handleSelectTextable" />
+  </el-dialog>
 </template>
 
 <style scoped>

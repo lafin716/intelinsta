@@ -3,6 +3,7 @@ import { Textable } from "types/automate/textable.type";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { DropdownInstance } from "element-plus";
+import { textableData } from "data/textable.data";
 
 const router = useRouter();
 const goAdd = () => {
@@ -11,91 +12,18 @@ const goAdd = () => {
 
 const testText = ref("");
 
-const previewTextStyle = (color, size) => {
+const previewTextStyle = (color: string, size: number) => {
   return {
     color: color,
     fontSize: `${size}px`,
   };
 };
 
-const goModify = (id) => {
+const goModify = (id: string) => {
   router.push(`/automate/textable/${id}`);
 };
 
-const templates = ref<Textable[]>([
-  {
-    id: "123123123",
-    title: "템플릿 1",
-    url: "/image/template.png",
-    text: "",
-    textSize: 50,
-    textColor: "#000000",
-  },
-  {
-    id: "123123123",
-    title: "템플릿 1",
-    url: "/image/template.png",
-    text: "",
-    textSize: 50,
-    textColor: "#000000",
-  },
-  {
-    id: "123123123",
-    title: "템플릿 1",
-    url: "/image/template.png",
-    text: "",
-    textSize: 50,
-    textColor: "#000000",
-  },
-  {
-    id: "123123123",
-    title: "템플릿 1",
-    url: "/image/template.png",
-    text: "",
-    textSize: 50,
-    textColor: "#000000",
-  },
-  {
-    id: "123123123",
-    title: "템플릿 1",
-    url: "/image/template.png",
-    text: "",
-    textSize: 50,
-    textColor: "#000000",
-  },
-  {
-    id: "123123123",
-    title: "템플릿 1",
-    url: "/image/template.png",
-    text: "",
-    textSize: 50,
-    textColor: "#000000",
-  },
-  {
-    id: "123123123",
-    title: "템플릿 1",
-    url: "/image/template.png",
-    text: "",
-    textSize: 50,
-    textColor: "#000000",
-  },
-  {
-    id: "123123123",
-    title: "템플릿 1",
-    url: "/image/template.png",
-    text: "",
-    textSize: 50,
-    textColor: "#000000",
-  },
-  {
-    id: "123123123",
-    title: "템플릿 1",
-    url: "/image/template.png",
-    text: "",
-    textSize: 50,
-    textColor: "#000000",
-  },
-]);
+const templates = ref<Textable[]>(textableData);
 </script>
 <template>
   <el-card>
@@ -126,7 +54,7 @@ const templates = ref<Textable[]>([
                   <el-button
                     type="primary"
                     size="small"
-                    @click="goModify(item.id)"
+                    @click="goModify(item.id!)"
                     >수정</el-button
                   >
                   <el-button type="danger" size="small">삭제</el-button>
