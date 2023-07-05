@@ -5,10 +5,8 @@ import { Textable } from "@/types/automate/textable.type";
 import { ref, computed } from "vue";
 import { Plus } from "@element-plus/icons-vue";
 import type { UploadProps } from "element-plus";
-import ListTextableImages from "components/dialogs/ListTextableImages.vue";
 
 const imageUrl = ref("");
-
 const router = useRouter();
 const goTemplateList = () => {
   router.push("/automate/textable");

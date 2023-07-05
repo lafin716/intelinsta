@@ -4,8 +4,9 @@ import { ElMessage } from "element-plus";
 import { Textable } from "@/types/automate/textable.type";
 import { ref, computed } from "vue";
 import ListTextableImages from "@/components/dialogs/ListTextableImages.vue";
-import type { UploadFile, UploadFiles, UploadUserFile } from "element-plus";
+import type { UploadProps, UploadRawFile, UploadUserFile } from "element-plus";
 
+const limitItemCount = 10;
 const imageUrl = ref("");
 const router = useRouter();
 const goTemplateList = () => {
@@ -18,8 +19,7 @@ const saveTemplate = () => {
 
 const showTextableDialog = ref(false);
 const fileList = ref<(UploadUserFile | Textable)[]>([]);
-const dialogImageUrl = ref("");
-const dialogVisible = ref(false);
+const computedFileList = computed(() => fileList.value);
 const form = ref<Textable>({
   title: "",
   url: "",
@@ -35,13 +35,45 @@ const previewTextStyle = computed(() => {
   };
 });
 
-const previewImage = (file: UploadUserFile | Textable) => {
+const previewLabelType = (file: UploadUserFile | Textable) => {
+  if ("raw" in file) {
+    return "warning";
+  }
+
+  if ("url" in file) {
+    return "success";
+  }
+
+  return "warning";
+};
+
+const previewLabel = (file: UploadUserFile | Textable) => {
+  if ("raw" in file) {
+    return "업로드";
+  }
+
+  if ("url" in file) {
+    return "텍스터블";
+  }
+
+  return "업로드";
+};
+
+const previewImage = (file: UploadUserFile | Textable | UploadRawFile) => {
   if ("raw" in file) {
     return URL.createObjectURL(file.raw!);
   }
 
-  return file.url;
+  if ("url" in file) {
+    return file.url;
+  }
+
+  return URL.createObjectURL(file as File);
 };
+
+const uploadedLength = computed(() => {
+  return fileList.value.length || 0;
+});
 
 const handleDeleteImage = (index: number) => {
   console.log(index);
@@ -49,16 +81,22 @@ const handleDeleteImage = (index: number) => {
 };
 
 const handleSelectTextable = (item: Textable) => {
+  if (fileList.value.length >= limitItemCount) {
+    ElMessage.warning(`이미지는 ${limitItemCount}개까지만 등록할 수 있습니다.`);
+    return;
+  }
+
   fileList.value.push(item);
   showTextableDialog.value = false;
 };
 
-const uploaded = (
-  response: any,
-  uploadFile: UploadFile,
-  uploadFiles: UploadFiles
-) => {
-  console.log(response, uploadFile, uploadFiles);
+const handleExceed: UploadProps["onExceed"] = (files) => {
+  ElMessage.warning(`이미지는 ${limitItemCount}개까지만 등록할 수 있습니다.`);
+
+  const remainCount = limitItemCount - fileList.value.length;
+  if (remainCount > 0) {
+    fileList.value.push(...files.slice(0, remainCount));
+  }
 };
 </script>
 <template>
@@ -89,7 +127,6 @@ const uploaded = (
           </div>
         </template>
         <div class="flex flex-col">
-          <el-divider content-position="left">기본정보</el-divider>
           <el-form :model="form" label-width="120px">
             <el-form-item label="템플릿 이름" required>
               <el-input
@@ -105,9 +142,10 @@ const uploaded = (
                 v-model:file-list="fileList"
                 :multiple="true"
                 :auto-upload="false"
-                @on-success="uploaded"
+                :limit="limitItemCount"
                 :show-file-list="false"
                 class="flex items-center me-1"
+                :on-exceed="handleExceed"
               >
                 <template #trigger>
                   <el-button type="">이미지 추가</el-button>
@@ -120,6 +158,7 @@ const uploaded = (
             </el-form-item>
 
             <el-form-item label="업로드 된 목록" required>
+              <p v-if="uploadedLength === 0">이미지를 업로드해주세요.</p>
               <draggable v-model="fileList" class="flex flex-wrap">
                 <transition-group>
                   <div
@@ -130,11 +169,9 @@ const uploaded = (
                     <el-card>
                       <template #header>
                         <div class="flex justify-between">
-                          <Icon
-                            name="material-symbols:drag-pan-rounded"
-                            class="cursor-move"
-                            size="16"
-                          />
+                          <el-tag :type="previewLabelType(item)">{{
+                            previewLabel(item)
+                          }}</el-tag>
                           <Icon
                             name="ic:round-cancel"
                             class="cursor-pointer"
@@ -156,7 +193,6 @@ const uploaded = (
               </draggable>
             </el-form-item>
 
-            <el-divider content-position="left">테스트</el-divider>
             <el-form-item label="템플릿 텍스트">
               <el-input
                 size="default"
@@ -178,29 +214,30 @@ const uploaded = (
             <span class="me-2">미리보기</span>
           </div>
         </template>
-        <div class="w-full min-h-48">
-          <div v-if="imageUrl" class="preview-wrap">
-            <div class="preview-background">
-              <img :src="imageUrl" class="avatar" />
-            </div>
-            <div class="preview-foreground">
-              <p :style="previewTextStyle">{{ form.text }}</p>
-            </div>
-          </div>
+        <div>
+          <el-carousel
+            trigger="click"
+            :autoplay="false"
+            v-if="fileList && fileList.length > 0"
+          >
+            <el-carousel-item v-for="item in fileList" :key="item">
+              <el-image :src="previewImage(item)" style="width: 100%" />
+            </el-carousel-item>
+          </el-carousel>
           <div
             v-else
             class="border border-dashed h-48 flex items-center justify-center"
           >
-            <span class="text-gray-600">이미지를 업로드해주세요.</span>
+            <span class="text-gray-600">컨텐츠를 업로드해주세요.</span>
           </div>
+
+          <p class="border p-3">
+            {{ form.text || "텍스트를 입력하세요." }}
+          </p>
         </div>
       </el-card>
     </el-col>
   </el-row>
-
-  <el-dialog v-model="dialogVisible" :append-to-body="true">
-    <img w-full :src="dialogImageUrl" alt="Preview Image" />
-  </el-dialog>
 
   <el-dialog
     v-model="showTextableDialog"

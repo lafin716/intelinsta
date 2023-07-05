@@ -91,7 +91,7 @@ const goAdd = () => {
   router.push("/automate/template/add");
 };
 
-const goModify = (id) => {
+const goModify = (id: number) => {
   router.push(`/automate/template/${id}`);
 };
 </script>

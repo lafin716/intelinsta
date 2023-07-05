@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Textable } from "types/automate/textable.type";
+import { Textable } from "@/types/automate/textable.type";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { DropdownInstance } from "element-plus";
-import { textableData } from "data/textable.data";
+import { textableData } from "@/data/textable.data";
 
 const router = useRouter();
 const goAdd = () => {
