@@ -5,6 +5,8 @@ import { User, UserStatus } from "~/types/user/user.type";
 import { ref, computed } from "vue";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
+import { userData } from "@/data/user.data";
+import DateUtil from "@/utils/date.util";
 
 const router = useRouter();
 const dialogVisible = ref(false);
@@ -23,22 +25,6 @@ const handleDelete = (index: number, row: User) => {
     type: "success",
   });
 };
-
-const tableData: User[] = [
-  {
-    id: "ej21ioej21eo",
-    username: "lafin.co",
-    avatar: "/image/avatar.jpg",
-    status: UserStatus.INACTIVE,
-    follower: 100,
-    following: 100,
-    post: 100,
-    createdAt: "2016-05-03",
-    updatedAt: "2016-05-03",
-    bannedAt: "2016-05-03",
-    deletedAt: "2016-05-03",
-  },
-];
 </script>
 <template>
   <el-card class="box-card">
@@ -54,7 +40,7 @@ const tableData: User[] = [
         >
       </div>
     </template>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="userData" style="width: 100%">
       <el-table-column label="번호" width="70" align="center">
         <template #default="scope">
           <span>{{ scope.$index + 1 }}</span>
@@ -106,7 +92,9 @@ const tableData: User[] = [
       <el-table-column label="등록날짜" width="150" align="center">
         <template #default="scope">
           <div class="flex items-center justify-center">
-            <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
+            <span style="margin-left: 10px">{{
+              DateUtil.format(scope.row.createdAt, "yyyy-MM-DD")
+            }}</span>
           </div>
         </template>
       </el-table-column>
@@ -114,7 +102,9 @@ const tableData: User[] = [
       <el-table-column label="수정날짜" width="150" align="center">
         <template #default="scope">
           <div class="flex items-center justify-center">
-            <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
+            <span style="margin-left: 10px">{{
+              DateUtil.format(scope.row.createdAt, "yyyy-MM-DD")
+            }}</span>
           </div>
         </template>
       </el-table-column>
@@ -122,7 +112,9 @@ const tableData: User[] = [
       <el-table-column label="삭제날짜" width="150" align="center">
         <template #default="scope">
           <div class="flex items-center justify-center">
-            <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
+            <span style="margin-left: 10px">{{
+              DateUtil.format(scope.row.createdAt, "yyyy-MM-DD")
+            }}</span>
           </div>
         </template>
       </el-table-column>
@@ -130,7 +122,9 @@ const tableData: User[] = [
       <el-table-column label="밴 날짜" width="150" align="center">
         <template #default="scope">
           <div class="flex items-center justify-center">
-            <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
+            <span style="margin-left: 10px">{{
+              DateUtil.format(scope.row.createdAt, "yyyy-MM-DD")
+            }}</span>
           </div>
         </template>
       </el-table-column>
