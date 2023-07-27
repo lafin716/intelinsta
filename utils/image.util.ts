@@ -8,8 +8,8 @@ export const resizeImage = async (
   try {
     const image = await Jimp.read(imagePath);
     await image.resize(width, height).writeAsync("path/to/resized_image.jpg");
-    console.log("Resized image successfully");
+    console.log("리사이징이 완료되었습니다");
   } catch (error) {
-    console.error("Error while resizing image:", error);
+    console.error("리사이징 오류:", error);
   }
 };
